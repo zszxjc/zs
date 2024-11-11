@@ -15,6 +15,10 @@ read -p "请输入Cloudflare的API Token: " CF_Token
 # 配置环境变量
 export CF_Token="$CF_Token"
 
+# 检查并设置默认 CA 为 Let’s Encrypt（可选）
+echo "设置默认 CA 为 Let’s Encrypt..."
+~/.acme.sh/acme.sh --set-default-ca --server letsencrypt
+
 # 申请证书（包括通配符）
 echo "正在申请 $DOMAIN 和 *.${DOMAIN} 的证书..."
 ~/.acme.sh/acme.sh --issue --dns dns_cf -d "$DOMAIN" -d "*.${DOMAIN}" --keylength ec-256
