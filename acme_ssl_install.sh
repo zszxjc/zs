@@ -39,9 +39,8 @@ echo "安装证书到 $CERT_DIR..."
     --key-file "$CERT_DIR/$DOMAIN.key" \
     --fullchain-file "$CERT_DIR/fullchain.cer"
 
-# 创建 cron job，每天 0:00 检查并更新证书
-echo "添加每日定时任务..."
-(crontab -l 2>/dev/null; echo "0 0 * * * ~/.acme.sh/acme.sh --cron --home ~/.acme.sh > /dev/null") | crontab -
+# 删除已有的 cron job，避免重复任务
+(crontab -l 2>/dev/null | grep -v 'acme.sh' ; echo "0 0 * * * ~/.acme.sh/acme.sh --cron --home ~/.acme.sh > /dev/null") | crontab -
 
 # 清除环境变量（增强安全性）
 unset CF_Token
